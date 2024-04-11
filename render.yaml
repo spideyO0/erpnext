@@ -61,7 +61,7 @@ databases:
     user: erpnext
     password: your-password
 
-services:
+services2:
   - type: redis
     name: erpnext-redis
     memory: 256
