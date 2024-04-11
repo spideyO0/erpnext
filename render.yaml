@@ -1,0 +1,67 @@
+services:
+  - type: web
+    name: erpnext
+    env: python
+    buildCommand: bash.deploy/build.sh
+    startCommand: bash.deploy/start.sh
+    healthCheckPath: /health
+    envVars:
+      - key: FRAPPE_BRANCH
+        value: develop
+      - key: ERPNEXT_BRANCH
+        value: develop
+      - key: DB_HOST
+        fromDatabase:
+          name: erpnext-db
+          property: host
+      - key: DB_NAME
+        fromDatabase:
+          name: erpnext-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: erpnext-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: erpnext-db
+          property: password
+      - key: REDIS_CACHE
+        fromService:
+          name: erpnext-redis
+          property: host
+      - key: REDIS_QUEUE
+        fromService:
+          name: erpnext-redis
+          property: host
+      - key: REDIS_SOCKETIO
+        fromService:
+          name: erpnext-redis
+          property: host
+      - key: SOCKETIO_PORT
+        value: 9000
+      - key: WORKER_PORT
+        value: 8000
+      - key: HTTP_PORT
+        value: 80
+      - key: HTTPS_PORT
+        value: 443
+      - key: LETSENCRYPT_EMAIL
+        value: dshantanu2003@gmail.com
+      - key: LETSENCRYPT_HOST
+        value: ${RENDER_EXTERNAL_HOSTNAME}
+      - key: LETSENCRYPT_PORT
+        value: 443
+      - key: LETSENCRYPT_TEST
+        value: false
+
+databases:
+  - name: erpnext-db
+    database: erpnext
+    user: erpnext
+    password: your-password
+
+services:
+  - type: redis
+    name: erpnext-redis
+    memory: 256
